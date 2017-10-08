@@ -26,7 +26,7 @@ class TCP(object):
             logger.info('Starting server on port %d' % self.port)
             self.socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
             self.socket.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
-            self.socket.bind((self.hostname, self.port))
+            self.socket.bind((self.host, self.port))
             self.socket.listen(self.backlog)
             while True:
                 conn, addr = self.socket.accept()
@@ -34,7 +34,7 @@ class TCP(object):
                              (conn, addr))
                 client = Client(conn, addr)
                 server = Server(self.webhost, self.webport)
-                self.handle(client)
+                self.handle(client, server)
         except Exception as e:
             logger.exception('Exception while running the server %r' % e)
         finally:

@@ -17,7 +17,7 @@ def main():
 
     parser.add_argument('--webhost', default='127.0.0.1',
                         help='Default: 127.0.0.1')
-    parser.add_argument('--webport', default='80', help='Default: 80')
+    parser.add_argument('--webport', default='8000', help='Default: 80')
     parser.add_argument('--srvhost', default='127.0.0.1',
                         help='Default: 127.0.0.1')
     parser.add_argument('--srvport', default='8083', help='Default: 8083')

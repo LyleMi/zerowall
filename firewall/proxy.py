@@ -5,6 +5,7 @@ import multiprocessing
 import datetime
 import select
 
+from common.logger import logger
 from firewall.const import *
 from firewall.parser import HttpParser
 from firewall.connection import Server
@@ -25,6 +26,7 @@ class Proxy(multiprocessing.Process):
 
         self.client = client
         self.server = server
+        self.server.closed = True
 
         self.request = HttpParser()
         self.response = HttpParser(HTTP_RESPONSE_PARSER)
@@ -62,7 +64,10 @@ class Proxy(multiprocessing.Process):
             logger.debug('request parser is in state complete')
 
             try:
+                host = self.server.addr[0]
+                port = self.server.addr[1]
                 logger.debug('connecting to server %s:%s' % (host, port))
+                self.server.closed = False
                 self.server.connect()
                 logger.debug('connected to server %s:%s' % (host, port))
             except Exception as e:
