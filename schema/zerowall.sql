@@ -5,10 +5,8 @@ CREATE DATABASE `zerowall` DEFAULT CHARACTER SET utf8 collate utf8_general_ci;
 use `zerowall`;
 
 CREATE TABLE `income` (
-    -- `id` INT AUTO_INCREMENT,
     `uid` VARCHAR(32) NOT NULL,
     `ip` VARCHAR(64) NOT NULL, -- 1.1.1.1/24
-    `port` VARCHAR(64) NOT NULL, -- '' / '24-89'
     `allow` BOOLEAN NOT NULL,
     `comment` VARCHAR(200) NULL
 );
@@ -21,19 +19,21 @@ CREATE TABLE `http` (
     `allow` BOOLEAN NOT NULL,
 );
 
--- ex: key http verb, value get, type equal, allow true
--- ex: key http header ua, value sqlmap, type cotain, allow false
+-- e.g.: key http verb, value get, type equal, allow true
+-- e.g.: key http header ua, value sqlmap, type cotain, allow false
 
 CREATE TABLE `log` (
     `uid` VARCHAR(32) NOT NULL,
-    `src` VARCHAR(32) NOT NULL,
+    `srcip` VARCHAR(32) NOT NULL,
     `url` VARCHAR(32) NOT NULL,
-    `full` VARCHAR(1000) NULL,
+    `full` VARCHAR(1000) NULL, -- depend on log level
+    `resp` TEXT NULL, -- depend on log level
     `time` TIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
 );
 
 CREATE TABLE `setting` (
-    `loglevel` INT NOT NULL DEFAULT 1; -- VERBOSE/DEBUG/...
+    `logfull` BOOLEAN NOT NULL DEFAULT 0,
+    `logresp` BOOLEAN NOT NULL DEFAULT 0 
 );
 
-INSERT INTO `setting` VALUES(1);
+INSERT INTO `setting` VALUES(0, 0);
