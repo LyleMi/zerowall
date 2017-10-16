@@ -13,9 +13,9 @@ CREATE TABLE `income` (
 
 CREATE TABLE `http` (
     `uid` VARCHAR(32) NOT NULL,
-    `key` VARCHAR(64) NOT NULL, 
-    `value` VARCHAR(64) NOT NULL, 
-    `type` VARCHAR(10) NOT NULL, -- regex/cotain/equal
+    `key` VARCHAR(200) NOT NULL, 
+    `value` VARCHAR(200) NOT NULL, 
+    `rtype` VARCHAR(10) NOT NULL, -- regex/cotain/equal
     `allow` BOOLEAN NOT NULL,
 );
 
@@ -24,9 +24,9 @@ CREATE TABLE `http` (
 
 CREATE TABLE `log` (
     `uid` VARCHAR(32) NOT NULL,
-    `srcip` VARCHAR(32) NOT NULL,
-    `url` VARCHAR(32) NOT NULL,
-    `full` VARCHAR(1000) NULL, -- depend on log level
+    `srcip` VARCHAR(64) NOT NULL,
+    `url` VARCHAR(500) NOT NULL,
+    `full` TEXT NULL, -- depend on log level
     `resp` TEXT NULL, -- depend on log level
     `time` TIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
 );

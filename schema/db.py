@@ -1,16 +1,12 @@
-#!/usr/bin/python
-# -*- coding: utf-8 -*-
+#!/usr/bin/env python
+# -*- coding:utf-8 -*-
 
-import MySQLdb
+from sqlalchemy import create_engine
+
 from common.sqlconfig import mysql
 
-
-class DB(object):
-
-    def __init__(self):
-        self.conn = MySQLdb.connect(host=mysql['host'],
-                                    user=mysql['user'],
-                                    passwd=mysql['pass'],
-                                    db=mysql['db'],
-                                    charset='utf8')
-        self.cur = self.conn.cursor()
+engine = create_engine('mysql+pymysql://%s:%s@%s/%s?charset=%s' %
+                       (mysql['user'], mysql['pass'], 
+                        mysql['host'], mysql['db'], 'utf8'),
+                       encoding='utf8', echo=False,
+                       pool_size=100, pool_recycle=10)
