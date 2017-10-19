@@ -1,19 +1,18 @@
-#!/usr/bin/env python3
+#!/usr/bin/env python
 # -*- coding:utf-8 -*-
-
-from sqlalchemy import and_
 
 from sqlalchemy import Column, Integer, VARCHAR
 from sqlalchemy import TIMESTAMP, TEXT, Enum
 
-from orm.tables.base import BaseTable
+from schema.tables.base import BaseTable
+from common.utils import guid
 
 
 class Log(BaseTable):
 
     __tablename__ = 'log'
 
-    uid = Column(VARCHAR(32), primary_key=True)
+    uid = Column(VARCHAR(32), primary_key=True, default=guid)
     srcip = Column(VARCHAR(200))
     url = Column(VARCHAR(500))
     full = Column(TEXT)
@@ -21,6 +20,8 @@ class Log(BaseTable):
     time = Column(TIMESTAMP)
 
     @classmethod
-    def addLog(cls, db, uid, content):
-        log = Log()
+    def add(cls, db, srcip, url, full, resp):
+        log = Log(srcip=srcip, url=url,
+                  full=full, resp=resp)
+        db.add(log)
         return True

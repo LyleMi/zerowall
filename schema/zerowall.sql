@@ -16,7 +16,7 @@ CREATE TABLE `http` (
     `key` VARCHAR(200) NOT NULL, 
     `value` VARCHAR(200) NOT NULL, 
     `rtype` VARCHAR(10) NOT NULL, -- regex/cotain/equal
-    `allow` BOOLEAN NOT NULL,
+    `allow` BOOLEAN NOT NULL
 );
 
 -- e.g.: key http verb, value get, type equal, allow true
@@ -28,7 +28,7 @@ CREATE TABLE `log` (
     `url` VARCHAR(500) NOT NULL,
     `full` TEXT NULL, -- depend on log level
     `resp` TEXT NULL, -- depend on log level
-    `time` TIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    `time` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
 );
 
 CREATE TABLE `setting` (
