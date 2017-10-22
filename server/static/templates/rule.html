@@ -1,0 +1,18 @@
+<div class="panel panel-default" ng-init="getAll('rule')">
+    <table class="table">
+        <tbody>
+            <tr>
+                <th>key</th>
+                <th>value</th>
+                <th>rtype</th>
+                <th>allow</th>
+            </tr>
+            <tr ng-repeat="rule in data.rules">
+                <td>{{ rule.key }}</td>
+                <td>{{ rule.value }}</td>
+                <td>{{ rule.rtype }}</td>
+                <td>{{ rule.allow }}</td>
+            </tr>
+        </tbody>
+    </table>
+</div>

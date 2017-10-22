@@ -1,0 +1,20 @@
+<div class="panel panel-default" ng-init="getAll('log')">
+    <table class="table">
+        <tbody>
+            <tr>
+                <th>来源ip</th>
+                <th>url</th>
+                <th>请求报文</th>
+                <th>返回报文</th>
+                <th>时间</th>
+            </tr>
+            <tr ng-repeat="log in data.logs">
+                <td>{{ log.srcip }}</td>
+                <td>{{ log.url }}</td>
+                <td>{{ log.full }}</td>
+                <td>{{ log.resp }}</td>
+                <td>{{ log.time }}</td>
+            </tr>
+        </tbody>
+    </table>
+</div>

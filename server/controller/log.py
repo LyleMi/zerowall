@@ -2,10 +2,12 @@
 # -*- coding:utf-8 -*-
 
 import tornado.web
+
 from server.controller.base import BaseHandler
+from schema.tables.log import Log
 
 
-class MainHandler(BaseHandler):
+class LogHandler(BaseHandler):
 
     def get(self):
-        self.render("index.html")
+        return self.ok(Log.getAll(self.db, toStr=True))

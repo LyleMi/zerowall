@@ -2,10 +2,12 @@
 # -*- coding:utf-8 -*-
 
 import tornado.web
+
 from server.controller.base import BaseHandler
+from schema.tables.http import HTTP
 
 
-class MainHandler(BaseHandler):
+class RuleHandler(BaseHandler):
 
     def get(self):
-        self.render("index.html")
+        return self.ok(HTTP.getAll(self.db, toStr=True))

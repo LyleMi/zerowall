@@ -44,5 +44,8 @@ settings = {
 # 路由
 handlers = [
     (r"/", "server.controller.main.MainHandler"),
+    (r"/log", "server.controller.log.LogHandler"),
+    (r"/blist", "server.controller.blist.BlistHandler"),
+    (r"/rule", "server.controller.rule.RuleHandler"),
 ]
 

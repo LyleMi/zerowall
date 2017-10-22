@@ -1,0 +1,16 @@
+<div class="panel panel-default" ng-init="getAll('blist')">
+    <table class="table">
+        <tbody>
+            <tr>
+                <th>ip/子网</th>
+                <th>allow</th>
+                <th>注释</th>
+            </tr>
+            <tr ng-repeat="blist in data.blists">
+                <td>{{ blist.ip }}</td>
+                <td>{{ blist.allow }}</td>
+                <td>{{ blist.comment }}</td>
+            </tr>
+        </tbody>
+    </table>
+</div>

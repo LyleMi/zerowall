@@ -2,10 +2,12 @@
 # -*- coding:utf-8 -*-
 
 import tornado.web
+
 from server.controller.base import BaseHandler
+from schema.tables.income import Income
 
 
-class MainHandler(BaseHandler):
+class BlistHandler(BaseHandler):
 
     def get(self):
-        self.render("index.html")
+        return self.ok(Income.getAll(self.db, toStr=True))

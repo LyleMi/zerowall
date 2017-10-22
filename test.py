@@ -21,7 +21,7 @@ def testHTTP(db):
 
     print HTTP.get(db, uid).toStr()
 
-    print HTTP.delete(db, uid)
+    # print HTTP.delete(db, uid)
 
     db.commit()
 
@@ -63,5 +63,5 @@ def testLog(db):
 if __name__ == '__main__':
     db = initDB()
     testHTTP(db)
-    testIncome(db)
-    testLog(db)
+    # testIncome(db)
+    # testLog(db)

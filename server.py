@@ -11,12 +11,12 @@ from common.config import DEBUG
 from common.config import settings
 from common.config import handlers
 
-from orm.db import DB
+from common.core import initDB
 
 def main():
     try:
         app = tornado.web.Application(handlers, debug=DEBUG, **settings)
-        app.db = DB()
+        app.db = initDB()
         print("[*] Server run at %s" % tornado.options.options.url)
         
         if True:
