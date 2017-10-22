@@ -28,7 +28,8 @@ def testHTTP(db):
 
 def testIncome(db):
     uid = ""
-    print Income.add(db, "192.168.1.0/24", 0, "internat")
+    # print Income.add(db, "192.168.1.0/24", 0, "internat")
+    print Income.add(db, "172.168.1.0/24", 0, "internat", 2)
 
     for i in Income.getAll(db):
         uid = i.uid
@@ -62,6 +63,7 @@ def testLog(db):
 
 if __name__ == '__main__':
     db = initDB()
-    testHTTP(db)
-    # testIncome(db)
+    # print Income.getNewSeq(db)
+    # testHTTP(db)
+    testIncome(db)
     # testLog(db)

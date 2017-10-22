@@ -6,17 +6,21 @@ use `zerowall`;
 
 CREATE TABLE `income` (
     `uid` VARCHAR(32) NOT NULL,
+    `seq` INT NOT NULL, -- rule sequence
     `ip` VARCHAR(64) NOT NULL, -- 1.1.1.1/24
     `allow` BOOLEAN NOT NULL,
-    `comment` VARCHAR(200) NULL
+    `comment` VARCHAR(200) NULL,
+    UNIQUE (`seq`)
 );
 
 CREATE TABLE `http` (
     `uid` VARCHAR(32) NOT NULL,
+    `seq` INT NOT NULL, -- rule sequence
     `key` VARCHAR(200) NOT NULL, 
     `value` VARCHAR(200) NOT NULL, 
     `rtype` VARCHAR(10) NOT NULL, -- regex/cotain/equal
-    `allow` BOOLEAN NOT NULL
+    `allow` BOOLEAN NOT NULL,
+    UNIQUE (`seq`)
 );
 
 -- e.g.: key http verb, value get, type equal, allow true

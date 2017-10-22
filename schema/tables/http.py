@@ -2,7 +2,7 @@
 # -*- coding:utf-8 -*-
 
 from sqlalchemy import and_
-from sqlalchemy import Column, BOOLEAN, VARCHAR
+from sqlalchemy import Column, BOOLEAN, VARCHAR, INT
 
 from schema.tables.base import BaseTable
 from common.utils import guid
@@ -13,6 +13,7 @@ class HTTP(BaseTable):
     __tablename__ = 'http'
 
     uid = Column(VARCHAR(32), primary_key=True, default=guid)
+    seq = Column(INT)
     key = Column(VARCHAR(200))
     value = Column(VARCHAR(200))
     rtype = Column(VARCHAR(10))

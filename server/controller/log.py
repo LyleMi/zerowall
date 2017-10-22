@@ -11,3 +11,8 @@ class LogHandler(BaseHandler):
 
     def get(self):
         return self.ok(Log.getAll(self.db, toStr=True))
+    
+    def delete(self):
+        uid = self.get_argument('uid', '')
+        Log.delete(self.db, uid)
+        return self.ok("delete suc")

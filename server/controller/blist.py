@@ -11,3 +11,8 @@ class BlistHandler(BaseHandler):
 
     def get(self):
         return self.ok(Income.getAll(self.db, toStr=True))
+    
+    def delete(self):
+        uid = self.get_argument('uid', '')
+        Income.delete(self.db, uid)
+        return self.ok("delete suc")

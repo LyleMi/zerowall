@@ -11,3 +11,8 @@ class RuleHandler(BaseHandler):
 
     def get(self):
         return self.ok(HTTP.getAll(self.db, toStr=True))
+    
+    def delete(self):
+        uid = self.get_argument('uid', '')
+        HTTP.delete(self.db, uid)
+        return self.ok("delete suc")

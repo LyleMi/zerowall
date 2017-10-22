@@ -1,15 +1,19 @@
+<h1>入网ip防火墙</h1>
+<button class="btn">添加规则</button>
 <div class="panel panel-default" ng-init="getAll('blist')">
     <table class="table">
         <tbody>
             <tr>
                 <th>ip/子网</th>
-                <th>allow</th>
+                <th>策略</th>
                 <th>注释</th>
+                <th>操作</th>
             </tr>
             <tr ng-repeat="blist in data.blists">
                 <td>{{ blist.ip }}</td>
                 <td>{{ blist.allow }}</td>
                 <td>{{ blist.comment }}</td>
+                <td><a ng-click="">编辑</a> <a ng-click="">向上插入</a> <a ng-click="">向下插入</a> <a ng-click="">删除</a></td>
             </tr>
         </tbody>
     </table>
