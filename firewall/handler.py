@@ -8,7 +8,10 @@ from firewall.proxy import Proxy
 
 
 class TCP(object):
-    """TCP server implementation."""
+
+    """
+    TCP server implementation.
+    """
 
     def __init__(self, host='127.0.0.1', port=8083,
                  webhost='127.0.0.1', webport=80, backlog=100):
@@ -43,8 +46,9 @@ class TCP(object):
 
 
 class HTTP(TCP):
-    """HTTP firewall implementation.
 
+    """
+    HTTP firewall implementation.
     Spawns new process to proxy accepted client connection.
     """
 

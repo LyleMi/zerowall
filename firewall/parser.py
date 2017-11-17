@@ -8,7 +8,10 @@ from firewall.const import *
 
 
 class ChunkParser(object):
-    """HTTP chunked encoding response parser."""
+
+    """
+    HTTP chunked encoding response parser.
+    """
 
     def __init__(self):
         self.state = CHUNK_PARSER_STATE_WAITING_FOR_SIZE

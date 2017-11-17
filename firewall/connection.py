@@ -5,8 +5,12 @@ import socket
 
 from common.logger import logger
 
+
 class Connection(object):
-    """TCP server/client connection abstraction."""
+
+    """
+    TCP server/client connection abstraction.
+    """
 
     def __init__(self, what):
         self.buffer = b''
@@ -25,8 +29,10 @@ class Connection(object):
             logger.debug('rcvd %d bytes from %s' % (len(data), self.what))
             return data
         except Exception as e:
-            logger.exception('Exception while receiving from connection %s %r with reason %r' % (
-                self.what, self.conn, e))
+            logger.exception(
+                'Exception while receiving from connection %s %r with reason %r' %
+                (self.what, self.conn, e)
+            )
             return None
 
     def close(self):
@@ -49,7 +55,10 @@ class Connection(object):
 
 
 class Server(Connection):
-    """Establish connection to destination server."""
+
+    """
+    Establish connection to destination server.
+    """
 
     def __init__(self, host, port):
         super(Server, self).__init__(b'server')
@@ -64,7 +73,10 @@ class Server(Connection):
 
 
 class Client(Connection):
-    """Accepted client connection."""
+
+    """
+    Accepted client connection.
+    """
 
     def __init__(self, conn, addr):
         super(Client, self).__init__(b'client')

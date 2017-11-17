@@ -1,9 +1,9 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-import multiprocessing
-import datetime
 import select
+import datetime
+import multiprocessing
 
 from common.logger import logger
 from firewall.const import *
@@ -13,9 +13,11 @@ from firewall.error import ProxyConnectionFailed
 
 
 class Proxy(multiprocessing.Process):
-    """HTTP proxy implementation.
 
-    Accepts connection object and act as a proxy between client and server.
+    """
+    HTTP proxy implementation.
+    Accepts connection object and act as a proxy
+    between client and server.
     """
 
     def __init__(self, client, server):
@@ -100,29 +102,51 @@ class Proxy(multiprocessing.Process):
     def _access_log(self):
         host, port = self.server.addr if self.server else (None, None)
         if self.request.method == b"CONNECT":
-            logger.info("%s:%s - %s %s:%s" %
-                        (self.client.addr[0], self.client.addr[1], self.request.method, host, port))
+            logger.info(
+                "%s:%s - %s %s:%s" %
+                (
+                    self.client.addr[0],
+                    self.client.addr[1],
+                    self.request.method,
+                    host, port
+                )
+            )
         elif self.request.method:
-            logger.info("%s:%s - %s %s:%s%s - %s %s - %s bytes" % (self.client.addr[0], self.client.addr[
-                        1], self.request.method, host, port, self.request.build_url(), self.response.code, self.response.reason, len(self.response.raw)))
+            logger.info(
+                "%s:%s - %s %s:%s%s - %s %s - %s bytes" % (
+                    self.client.addr[0],
+                    self.client.addr[1],
+                    self.request.method,
+                    host, port,
+                    self.request.build_url(),
+                    self.response.code,
+                    self.response.reason,
+                    len(self.response.raw)
+                )
+            )
 
     def _get_waitable_lists(self):
         rlist, wlist, xlist = [self.client.conn], [], []
         logger.debug('*** watching client for read ready')
 
         if self.client.has_buffer():
-            logger.debug(
-                'pending client buffer found, watching client for write ready')
+            logger.debug('pending client buffer found,' +
+                         ' watching client for write ready')
             wlist.append(self.client.conn)
 
         if self.server and not self.server.closed:
             logger.debug(
-                'connection to server exists, watching server for read ready')
+                'connection to server exists,' +
+                ' watching server for read ready'
+            )
             rlist.append(self.server.conn)
 
         if self.server and not self.server.closed and self.server.has_buffer():
             logger.debug(
-                'connection to server exists and pending server buffer found, watching server for write ready')
+                'connection to server exists and ' +
+                'pending server buffer found, ' +
+                'watching server for write ready'
+            )
             wlist.append(self.server.conn)
 
         return rlist, wlist, xlist
@@ -185,32 +209,43 @@ class Proxy(multiprocessing.Process):
             if self.client.buffer_size() == 0:
                 if self.response.state == HTTP_PARSER_STATE_COMPLETE:
                     logger.debug(
-                        'client buffer is empty and response state is complete, breaking')
+                        'client buffer is empty and ' +
+                        'response state is complete, breaking'
+                    )
                     break
 
                 if self._is_inactive():
                     logger.debug(
-                        'client buffer is empty and maximum inactivity has reached, breaking')
+                        'client buffer is empty and ' +
+                        'maximum inactivity has reached, breaking'
+                    )
                     break
 
     def run(self):
-        logger.debug('Proxying connection %r at address %r' %
-                     (self.client.conn, self.client.addr))
+        logger.debug(
+            'Proxying connection %r at address %r' %
+            (self.client.conn, self.client.addr)
+        )
         try:
             self._process()
         except KeyboardInterrupt:
             pass
         except Exception as e:
             logger.exception(
-                'Exception while handling connection %r with reason %r' % (self.client.conn, e))
+                'Exception while handling connection %r with reason %r' %
+                (self.client.conn, e)
+            )
         finally:
             logger.debug(
-                "closing client connection with pending client buffer size %d bytes" % self.client.buffer_size())
+                "closing connection with pending client %d bytes buffer" %
+                self.client.buffer_size()
+            )
             self.client.close()
             if self.server:
                 logger.debug(
-                    "closed client connection with pending server buffer size %d bytes" % self.server.buffer_size())
+                    "closed connection with pending server %d bytes buffer" %
+                    self.server.buffer_size()
+                )
             self._access_log()
             logger.debug('Closing proxy for connection %r at address %r' %
                          (self.client.conn, self.client.addr))
-
