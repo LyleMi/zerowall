@@ -8,9 +8,7 @@ from schema.db import engine
 from schema.tables.base import BaseTable
 
 def initDB():
-
     # 初始化数据库
-
     session_factory = sessionmaker()
     session_factory.configure(bind=engine)
     BaseTable.metadata.create_all(engine)

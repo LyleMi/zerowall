@@ -48,6 +48,16 @@ class Proxy(multiprocessing.Process):
     def _is_inactive(self):
         return self._inactive_for() > 30
 
+    def _client_reject(self):
+        self.client.queue(CRLF.join([
+            b'HTTP/1.1 502 Bad Gateway',
+            b'Proxy-agent: proxy.py',
+            b'Content-Length: 11',
+            b'Connection: close',
+            CRLF
+        ]) + b'Bad Gateway')
+        self.client.flush()
+
     def _process_request(self, data):
         # once we have connection to the server
         # we don't parse the http request packets
@@ -174,14 +184,7 @@ class Proxy(multiprocessing.Process):
                 self._process_request(data)
             except ProxyConnectionFailed as e:
                 logger.exception(e)
-                self.client.queue(CRLF.join([
-                    b'HTTP/1.1 502 Bad Gateway',
-                    b'Proxy-agent: proxy.py',
-                    b'Content-Length: 11',
-                    b'Connection: close',
-                    CRLF
-                ]) + b'Bad Gateway')
-                self.client.flush()
+                self._client_reject()
                 return True
 
         if self.server and not self.server.closed and self.server.conn in r:
@@ -203,6 +206,14 @@ class Proxy(multiprocessing.Process):
             r, w, x = select.select(rlist, wlist, xlist, 1)
 
             self._process_wlist(w)
+            '''
+                self.client.addr,
+                self.request.url,
+                self.request.method,
+                self.request.buffer,
+                self.response.buffer
+            self._reject_client()
+            '''
             if self._process_rlist(r):
                 break
 
@@ -228,8 +239,6 @@ class Proxy(multiprocessing.Process):
         )
         try:
             self._process()
-        except KeyboardInterrupt:
-            pass
         except Exception as e:
             logger.exception(
                 'Exception while handling connection %r with reason %r' %

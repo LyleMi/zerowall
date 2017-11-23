@@ -23,11 +23,8 @@ class Connection(object):
     def recv(self, bytes=8192):
         try:
             data = self.conn.recv(bytes)
-            if len(data) == 0:
-                logger.debug('recvd 0 bytes from %s' % self.what)
-                return None
             logger.debug('rcvd %d bytes from %s' % (len(data), self.what))
-            return data
+            return data if len(data) else None
         except Exception as e:
             logger.exception(
                 'Exception while receiving from connection %s %r with reason %r' %
@@ -43,7 +40,7 @@ class Connection(object):
         return len(self.buffer)
 
     def has_buffer(self):
-        return self.buffer_size() > 0
+        return len(self.buffer) > 0
 
     def queue(self, data):
         self.buffer += data
@@ -63,11 +60,8 @@ class Server(Connection):
     def __init__(self, host, port):
         super(Server, self).__init__(b'server')
         self.addr = (host, int(port))
-        # self.addr = ("127.0.0.1", 80)
 
     def connect(self):
-        # print(self.addr)
-        # self.addr[0] = "127.0.0.1"
         self.conn = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         self.conn.connect((self.addr[0], self.addr[1]))
 

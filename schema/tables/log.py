@@ -15,13 +15,16 @@ class Log(BaseTable):
     uid = Column(VARCHAR(32), primary_key=True, default=guid)
     srcip = Column(VARCHAR(200))
     url = Column(VARCHAR(500))
+    method = Column(VARCHAR(10))
     full = Column(TEXT)
     resp = Column(TEXT)
     time = Column(TIMESTAMP)
 
     @classmethod
-    def add(cls, db, srcip, url, full, resp):
-        log = Log(srcip=srcip, url=url,
-                  full=full, resp=resp)
+    def add(cls, db, srcip, url, method, full, resp):
+        log = Log(
+            srcip=srcip, url=url, method=method,
+            full=full, resp=resp
+        )
         db.add(log)
         return True

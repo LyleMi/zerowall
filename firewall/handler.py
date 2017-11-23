@@ -56,5 +56,7 @@ class HTTP(TCP):
         proc = Proxy(client, server)
         proc.daemon = True
         proc.start()
-        logger.debug('Started process %r to handle connection %r' %
-                     (proc, client.conn))
+        logger.debug(
+            'Started process %r to handle connection %r' %
+            (proc, client.conn)
+        )

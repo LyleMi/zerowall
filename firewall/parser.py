@@ -46,9 +46,13 @@ class ChunkParser(object):
 
 
 class HttpParser(object):
-    """HTTP request/response parser."""
+
+    """
+    HTTP request/response parser.
+    """
 
     def __init__(self, type=None):
+
         self.state = HTTP_PARSER_STATE_INITIALIZED
         self.type = type if type else HTTP_REQUEST_PARSER
 
@@ -87,7 +91,8 @@ class HttpParser(object):
                 self.body += data
                 if len(self.body) >= int(self.headers[b'content-length'][1]):
                     self.state = HTTP_PARSER_STATE_COMPLETE
-            elif b'transfer-encoding' in self.headers and self.headers[b'transfer-encoding'][1].lower() == b'chunked':
+            elif b'transfer-encoding' in self.headers and \
+                    self.headers[b'transfer-encoding'][1].lower() == b'chunked':
                 if not self.chunker:
                     self.chunker = ChunkParser()
                 self.chunker.parse(data)

@@ -9,61 +9,61 @@ from schema.tables.log import Log
 
 def testHTTP(db):
     uid = ""
-    print HTTP.add(db, "header", "sqlmap", "contain", 0)
+    print(HTTP.add(db, "header", "sqlmap", "contain", 0))
 
     for h in HTTP.getAll(db):
         uid = h.uid
-        print h.toStr()
+        print(h.toStr())
 
-    print HTTP.get(db, uid).toStr()
+    print(HTTP.get(db, uid).toStr())
 
-    print HTTP.change(db, uid, value='wvs')
+    print(HTTP.change(db, uid, value='wvs'))
 
-    print HTTP.get(db, uid).toStr()
+    print(HTTP.get(db, uid).toStr())
 
-    # print HTTP.delete(db, uid)
+    # print(HTTP.delete(db, uid))
 
     db.commit()
 
 
 def testIncome(db):
     uid = ""
-    # print Income.add(db, "192.168.1.0/24", 0, "internat")
-    print Income.add(db, "172.168.1.0/24", 0, "internat", 2)
+    # print(Income.add(db, "192.168.1.0/24", 0, "internat"))
+    print(Income.add(db, "172.168.1.0/24", 0, "internat", 2))
 
     for i in Income.getAll(db):
         uid = i.uid
-        print i.toStr()
+        print(i.toStr())
 
-    print Income.get(db, uid).toStr()
+    print(Income.get(db, uid).toStr())
 
-    print Income.change(db, uid, comment='new comment')
+    print(Income.change(db, uid, comment='new comment'))
 
-    print Income.get(db, uid).toStr()
+    print(Income.get(db, uid).toStr())
 
-    print Income.delete(db, uid)
+    print(Income.delete(db, uid))
 
     db.commit()
 
 
 def testLog(db):
     uid = ""
-    print Log.add(db, "192.168.1.124", "http://t.cn",
-                  "request", "response")
+    print(Log.add(db, "192.168.1.124", "http://t.cn",
+                  "GET", "request", "response"))
 
     for l in Log.getAll(db):
         uid = l.uid
-        print l.toStr()
+        print(l.toStr())
 
-    print Log.get(db, uid).toStr()
+    print(Log.get(db, uid).toStr())
 
-    print Log.delete(db, uid)
+    print(Log.delete(db, uid))
 
     db.commit()
 
 if __name__ == '__main__':
     db = initDB()
-    # print Income.getNewSeq(db)
+    # print(Income.getNewSeq(db))
     # testHTTP(db)
     testIncome(db)
     # testLog(db)
