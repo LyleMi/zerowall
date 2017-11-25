@@ -6,6 +6,7 @@ from sqlalchemy.sql import func
 
 from schema.tables.base import BaseTable
 from common.utils import guid
+from common.utils import isSubnet
 
 
 class Income(BaseTable):
@@ -65,6 +66,8 @@ class Income(BaseTable):
             return ret + 1
 
     @classmethod
-    def Match(cls, db, ip):
-        for rule in db.query(cls).order_by(cls.seq.desc()).all():
-            pass
+    def isAllowed(cls, db, ip):
+        for rule in db.query(cls).order_by(cls.seq.asc()).all():
+            if isSubnet(ip, rule.ip):
+                return rule.allow
+        return True

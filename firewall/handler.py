@@ -7,7 +7,6 @@ from common.logger import logger
 from firewall.connection import Client, Server
 from firewall.proxy import Proxy
 from schema.tables.income import Income
-from common.utils import isSubnet
 
 
 class TCP(object):
@@ -39,7 +38,9 @@ class TCP(object):
                 conn, addr = self.socket.accept()
                 logger.debug('Accepted connection %r at address %r' %
                              (conn, addr))
-                print(addr)
+                if not Income.isAllowed(self.db, addr[0]):
+                    conn.close()
+                    continue
                 client = Client(conn, addr)
                 server = Server(self.webhost, self.webport)
                 self.handle(client, server)

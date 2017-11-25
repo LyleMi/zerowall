@@ -5,7 +5,7 @@ import json
 import random
 import re
 import uuid
-
+from functools import reduce
 
 def guid():
     return uuid.uuid4().hex
@@ -23,11 +23,11 @@ def isSubnet(ip, subnet):
     return (ip & mask) == (ip2num(subnetip) & mask)
 
 if __name__ == '__main__':
-    print isSubnet("127.0.0.1", "127.0.0.0/24")
-    print isSubnet("127.0.0.1", "127.0.0.5/24")
-    print isSubnet("127.0.0.1", "127.0.1.5/24")
-    print isSubnet("192.167.1.1", "127.0.1.5/24")
-    print isSubnet("192.167.1.1", "127.0.1.5/0")
-    print isSubnet("192.167.1.1", "192.167.1.0/31")
-    print isSubnet("192.167.1.1", "192.167.1.0/31")
-    print isSubnet("192.167.1.1", "192.167.1.0/32")
+    print(isSubnet("127.0.0.1", "127.0.0.0/24"))
+    print(isSubnet("127.0.0.1", "127.0.0.5/24"))
+    print(isSubnet("127.0.0.1", "127.0.1.5/24"))
+    print(isSubnet("192.167.1.1", "127.0.1.5/24"))
+    print(isSubnet("192.167.1.1", "127.0.1.5/0"))
+    print(isSubnet("192.167.1.1", "192.167.1.0/31"))
+    print(isSubnet("192.167.1.1", "192.167.1.0/31"))
+    print(isSubnet("192.167.1.1", "192.167.1.0/32"))
