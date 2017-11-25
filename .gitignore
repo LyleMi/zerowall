@@ -102,3 +102,5 @@ ENV/
 
 # bower install folder
 bower/
+
+logs/*

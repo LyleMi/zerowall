@@ -13,18 +13,19 @@ class Log(BaseTable):
     __tablename__ = 'log'
 
     uid = Column(VARCHAR(32), primary_key=True, default=guid)
-    srcip = Column(VARCHAR(200))
+    client = Column(VARCHAR(200))
     url = Column(VARCHAR(500))
     method = Column(VARCHAR(10))
+    time = Column(TIMESTAMP)
+    ret = Column(VARCHAR(20))
     full = Column(TEXT)
     resp = Column(TEXT)
-    time = Column(TIMESTAMP)
 
     @classmethod
-    def add(cls, db, srcip, url, method, full, resp):
-        log = Log(
-            srcip=srcip, url=url, method=method,
-            full=full, resp=resp
-        )
-        db.add(log)
+    def add(cls, db, client, url, method, ret):
+        db.add(Log(
+            client=client, url=url,
+            method=method, ret=ret
+        ))
+        db.commit()
         return True

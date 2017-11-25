@@ -27,6 +27,7 @@ class HTTP(BaseTable):
         http.rtype = rtype
         http.allow = allow
         db.add(http)
+        db.commit()
         return True
 
     @classmethod
@@ -42,4 +43,5 @@ class HTTP(BaseTable):
         if allow is not None:
             updateobj[cls.allow] = allow
         http = db.query(cls).filter(cls.uid == uid).update(updateobj)
+        db.commit()
         return True

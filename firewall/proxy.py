@@ -5,11 +5,13 @@ import select
 import datetime
 import multiprocessing
 
+from common.core import initDB
 from common.logger import logger
 from firewall.const import *
 from firewall.parser import HttpParser
 from firewall.connection import Server
 from firewall.error import ProxyConnectionFailed
+from schema.tables.log import Log
 
 
 class Proxy(multiprocessing.Process):
@@ -22,7 +24,6 @@ class Proxy(multiprocessing.Process):
 
     def __init__(self, client, server):
         super(Proxy, self).__init__()
-
         self.start_time = self._now()
         self.last_activity = self.start_time
 
@@ -126,13 +127,21 @@ class Proxy(multiprocessing.Process):
                 "%s:%s - %s %s:%s%s - %s %s - %s bytes" % (
                     self.client.addr[0],
                     self.client.addr[1],
-                    self.request.method,
+                    self.request.method.decode("utf8"),
                     host, port,
-                    self.request.build_url(),
-                    self.response.code,
-                    self.response.reason,
+                    self.request.build_url().decode("utf8"),
+                    self.response.code.decode("utf8"),
+                    self.response.reason.decode("utf8"),
                     len(self.response.raw)
                 )
+            )
+            Log.add(
+                self.db,
+                ":".join(map(str, self.client.addr)),
+                self.request.build_url().decode("utf8"),
+                self.request.method.decode("utf8"),
+                self.response.code.decode("utf8") +
+                " " + self.response.reason.decode("utf8")
             )
 
     def _get_waitable_lists(self):
@@ -207,12 +216,7 @@ class Proxy(multiprocessing.Process):
 
             self._process_wlist(w)
             '''
-                self.client.addr,
-                self.request.url,
-                self.request.method,
-                self.request.buffer,
-                self.response.buffer
-            self._reject_client()
+            self._reject_client() if needed
             '''
             if self._process_rlist(r):
                 break
@@ -233,6 +237,7 @@ class Proxy(multiprocessing.Process):
                     break
 
     def run(self):
+        self.db = initDB()
         logger.debug(
             'Proxying connection %r at address %r' %
             (self.client.conn, self.client.addr)

@@ -35,4 +35,5 @@ class BaseTable(object):
     @classmethod
     def delete(cls, db, uid):
         obj = db.query(cls).filter(cls.uid == uid).delete()
+        db.commit()
         return True

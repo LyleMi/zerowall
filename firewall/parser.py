@@ -160,6 +160,14 @@ class HttpParser(object):
     def build_header(self, k, v):
         return k + b": " + v + CRLF
 
+    def build_all_header(self):
+        req = ""
+        for k in self.headers:
+            req += self.build_header(
+                self.headers[k][0], self.headers[k][1]
+            )
+        return req
+
     def build(self, del_headers=None, add_headers=None):
         req = b" ".join([self.method, self.build_url(), self.version])
         req += CRLF

@@ -3,17 +3,17 @@
         <tbody>
             <tr>
                 <th>来源ip</th>
+                <th>请求方式</th>
                 <th>url</th>
-                <th>请求报文</th>
-                <th>返回报文</th>
+                <th>返回</th>
                 <th>时间</th>
                 <th>操作</th>
             </tr>
             <tr ng-repeat="log in data.logs">
-                <td>{{ log.srcip }}</td>
+                <td>{{ log.client }}</td>
+                <td>{{ log.method }}</td>
                 <td>{{ log.url }}</td>
-                <td>{{ log.full }}</td>
-                <td>{{ log.resp }}</td>
+                <td>{{ log.ret }}</td>
                 <td>{{ log.time }}</td>
                 <td><a ng-click="delete('log', log.uid)">删除</a></td>
             </tr>

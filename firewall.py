@@ -5,7 +5,7 @@ import sys
 import argparse
 import logging
 
-from common.logger import logfmt
+from common.logger import logger
 from firewall.handler import HTTP
 
 
@@ -25,9 +25,7 @@ def main():
                         help='DEBUG, INFO, WARNING, ERROR, CRITICAL')
     args = parser.parse_args()
 
-    logging.basicConfig(level=getattr(logging, args.log_level),
-                        format=logfmt)
-
+    logger.setLevel(getattr(logging, args.log_level))
     webhost = args.webhost
     webport = int(args.webport)
     srvhost = args.srvhost

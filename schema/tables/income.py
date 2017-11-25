@@ -39,6 +39,7 @@ class Income(BaseTable):
             comment=comment, seq=seq
         )
         db.add(income)
+        db.commit()
         return True
 
     @classmethod
@@ -52,6 +53,7 @@ class Income(BaseTable):
         if comment is not None:
             updateobj[cls.comment] = comment
         income = db.query(cls).filter(cls.uid == uid).update(updateobj)
+        db.commit()
         return True
 
     @classmethod

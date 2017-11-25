@@ -28,9 +28,10 @@ CREATE TABLE `http` (
 
 CREATE TABLE `log` (
     `uid` VARCHAR(32) NOT NULL,
-    `srcip` VARCHAR(64) NOT NULL,
+    `client` VARCHAR(64) NOT NULL,
     `method` VARCHAR(10) NOT NULL,
     `url` VARCHAR(500) NOT NULL,
+    `ret` VARCHAR(20) NOT NULL,
     `full` TEXT NULL, -- depend on log level
     `resp` TEXT NULL, -- depend on log level
     `time` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
