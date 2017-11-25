@@ -63,3 +63,8 @@ class Income(BaseTable):
             return 0
         else:
             return ret + 1
+
+    @classmethod
+    def Match(cls, db, ip):
+        for rule in db.query(cls).order_by(cls.seq.desc()).all():
+            pass

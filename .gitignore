@@ -102,5 +102,6 @@ ENV/
 
 # bower install folder
 bower/
+test.py
 
 logs/*

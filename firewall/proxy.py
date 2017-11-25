@@ -213,7 +213,6 @@ class Proxy(multiprocessing.Process):
         while True:
             rlist, wlist, xlist = self._get_waitable_lists()
             r, w, x = select.select(rlist, wlist, xlist, 1)
-
             self._process_wlist(w)
             '''
             self._reject_client() if needed
