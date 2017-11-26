@@ -60,10 +60,7 @@ class Income(BaseTable):
     @classmethod
     def getNewSeq(cls, db):
         ret = db.query(func.max(cls.seq)).one()[0]
-        if ret is None:
-            return 0
-        else:
-            return ret + 1
+        return 0 if ret is None else ret + 1
 
     @classmethod
     def isAllowed(cls, db, ip):

@@ -6,7 +6,7 @@ app.run(["$rootScope", function($rootScope) {}]);
 
 app.config(["$stateProvider", "$urlRouterProvider", function($stateProvider, $urlRouterProvider) {
 
-    $urlRouterProvider.otherwise("/");
+    $urlRouterProvider.otherwise("/log");
 
     $stateProvider
         .state("notfound", {

@@ -3,6 +3,7 @@
 
 from sqlalchemy import and_
 from sqlalchemy import Column, BOOLEAN, VARCHAR, INT
+from sqlalchemy.sql import func
 
 from schema.tables.base import BaseTable
 from common.utils import guid
@@ -20,19 +21,34 @@ class HTTP(BaseTable):
     allow = Column(BOOLEAN)
 
     @classmethod
-    def add(cls, db, key, value, rtype, allow):
+    def add(cls, db, key, value, rtype, allow, seq=0):
+        if not seq:
+            seq = cls.getNewSeq(db)
+        else:
+            others = db.query(cls).filter(
+                cls.seq >= seq
+            ).order_by(
+                cls.seq.desc()
+            ).all()
+            for o in others:
+                db.query(cls).filter(
+                    cls.uid == o.uid
+                ).update({
+                    cls.seq: cls.seq+1
+                })
         http = HTTP()
         http.key = key
         http.value = value
         http.rtype = rtype
         http.allow = allow
+        http.seq = seq
         db.add(http)
         db.commit()
         return True
 
     @classmethod
     def change(cls, db, uid, key=None,
-                   value=None, rtype=None, allow=None):
+               value=None, rtype=None, allow=None):
         updateobj = {}
         if key is not None:
             updateobj[cls.key] = key
@@ -45,3 +61,8 @@ class HTTP(BaseTable):
         http = db.query(cls).filter(cls.uid == uid).update(updateobj)
         db.commit()
         return True
+
+    @classmethod
+    def getNewSeq(cls, db):
+        ret = db.query(func.max(cls.seq)).one()[0]
+        return 0 if ret is None else ret + 1

@@ -2,7 +2,7 @@
 
 lightweight firewall
 
-## todo
+## feature
 
 - defined filter rule
     - ip

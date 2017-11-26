@@ -137,7 +137,7 @@ class Proxy(multiprocessing.Process):
             )
             Log.add(
                 self.db,
-                ":".join(map(str, self.client.addr)),
+                self.client.addr[0],
                 self.request.build_url().decode("utf8"),
                 self.request.method.decode("utf8"),
                 self.response.code.decode("utf8") +

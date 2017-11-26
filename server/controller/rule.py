@@ -11,7 +11,17 @@ class RuleHandler(BaseHandler):
 
     def get(self):
         return self.ok(HTTP.getAll(self.db, toStr=True))
-    
+
+    def post(self):
+        key = self.get_argument('key')
+        value = self.get_argument('value')
+        rtype = self.get_argument('rtype')
+        seq = self.get_argument('seq')
+        allow = self.get_argument('allow') == '1'
+        HTTP.add(self.db, key, value, rtype, allow)
+        # self.db.commit()
+        return self.ok(HTTP.getAll(self.db, toStr=True))
+
     def delete(self):
         uid = self.get_argument('uid', '')
         HTTP.delete(self.db, uid)
