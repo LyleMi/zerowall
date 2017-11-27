@@ -66,3 +66,26 @@ class HTTP(BaseTable):
     def getNewSeq(cls, db):
         ret = db.query(func.max(cls.seq)).one()[0]
         return 0 if ret is None else ret + 1
+
+    @classmethod
+    def isAllowed(cls, db, method, url, headers):
+        method = method.decode("utf8")
+        url = url.decode("utf8")
+        for rule in db.query(cls).order_by(cls.seq.asc()).all():
+            if rule.key == "header":
+                k, v = rule.value.split("|")
+                k = k.lower().encode("utf8")
+                if k in headers.keys():
+                    if rule.rtype == "contain" and v in headers[k][1].decode("utf8"):
+                        return rule.allow
+                    elif rule.rtype == "equal" and v == headers[k][1].decode("utf8"):
+                        return rule.allow
+            elif rule.key == "method":
+                if rule.value == method:
+                    return rule.allow
+            elif rule.key == "url":
+                if rule.rtype == "contain" and rule.value in url:
+                    return rule.allow
+                if rule.rtype == "equal" and rule.value == url:
+                    return rule.allow
+        return True

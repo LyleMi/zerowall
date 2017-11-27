@@ -12,6 +12,7 @@ from firewall.parser import HttpParser
 from firewall.connection import Server
 from firewall.error import ProxyConnectionFailed
 from schema.tables.log import Log
+from schema.tables.http import HTTP
 
 
 class Proxy(multiprocessing.Process):
@@ -123,6 +124,9 @@ class Proxy(multiprocessing.Process):
                 )
             )
         elif self.request.method:
+            if self.response.code is None:
+                logger.info("reject client access")
+                return
             logger.info(
                 "%s:%s - %s %s:%s%s - %s %s - %s bytes" % (
                     self.client.addr[0],
@@ -214,10 +218,18 @@ class Proxy(multiprocessing.Process):
             rlist, wlist, xlist = self._get_waitable_lists()
             r, w, x = select.select(rlist, wlist, xlist, 1)
             self._process_wlist(w)
-            '''
-            self._reject_client() if needed
-            '''
+
+            if len(w) == 1 and len(r) == 0 and not HTTP.isAllowed(
+                self.db,
+                self.request.method,
+                self.request.build_url(),
+                self.request.headers
+            ):
+                self._client_reject()
+                break
+
             if self._process_rlist(r):
+                break
                 break
 
             if self.client.buffer_size() == 0:
