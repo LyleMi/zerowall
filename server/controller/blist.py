@@ -21,6 +21,14 @@ class BlistHandler(BaseHandler):
         # self.db.commit()
         return self.ok(Income.getAll(self.db, toStr=True))
 
+    def put(self):
+        uid = self.get_argument('uid')
+        ip = self.get_argument('ip')
+        allow = self.get_argument('allow') == '1'
+        comment = self.get_argument('comment')
+        Income.change(self.db, uid, ip, allow, comment)
+        return self.ok("suc")
+
     def delete(self):
         uid = self.get_argument('uid', '')
         Income.delete(self.db, uid)

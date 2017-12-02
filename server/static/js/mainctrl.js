@@ -16,12 +16,13 @@ app.controller("mainctrl",
                 rtype: "",
                 allow: "",
             },
+            changeIPRule: {},
+            changeHTTPRule: {},
         }
 
         $scope.getAll = function(type) {
             HttpService.get(type, {}, function(response) {
                 $scope.data[type + 's'] = response.data;
-                console.log($scope.data);
             }, function(err) {
                 if (err.data.msg) {
                     alert(err.data.msg);
@@ -37,7 +38,6 @@ app.controller("mainctrl",
                 uid: uid
             }, function(response) {
                 $scope.getAll(type);
-                console.log($scope.data);
             }, function(err) {
                 if (err.data.msg) {
                     alert(err.data.msg);
@@ -46,6 +46,56 @@ app.controller("mainctrl",
                 }
             });
         };
+
+        $scope.change = function(type, uid) {
+            if (type == "rule") {
+                for (let r in $scope.data.rules) {
+                    if ($scope.data.rules[r].uid == uid) {
+                        $scope.data.changeHTTPRule = JSON.parse(JSON.stringify($scope.data.rules[r]));
+                        $scope.data.changeHTTPRule.allow = $scope.data.rules[r].allow ? "1" : "0";
+                        break;
+                    }
+                }
+                $('#changeHttpRuleModal').modal();
+            } else if (type == 'blist') {
+                for (let r in $scope.data.blists) {
+                    if ($scope.data.blists[r].uid == uid) {
+                        $scope.data.changeIPRule = JSON.parse(JSON.stringify($scope.data.blists[r]));
+                        $scope.data.changeIPRule.allow = $scope.data.blists[r].allow ? "1" : "0";
+                        break;
+                    }
+                }
+                $('#changeRuleModal').modal();
+            }
+        }
+
+        $scope.changeHTTPRule = function() {
+            HttpService.put("rule", $scope.data.changeHTTPRule, function(response) {
+                $scope.getAll("rule");
+            }, function(err) {
+                if (err.data.msg) {
+                    alert(err.data.msg);
+                } else {
+                    alert("很抱歉，发生了未知错误");
+                }
+            });
+            $scope.data.changeHTTPRule = {};
+            $('#changeHttpRuleModal').modal('hide');
+        }
+
+        $scope.changeIPRule = function() {
+            HttpService.put("blist", $scope.data.changeIPRule, function(response) {
+                $scope.getAll("blist");
+            }, function(err) {
+                if (err.data.msg) {
+                    alert(err.data.msg);
+                } else {
+                    alert("很抱歉，发生了未知错误");
+                }
+            });
+            $scope.data.changeIPRule = {};
+            $('#changeRuleModal').modal('hide');
+        }
 
         $scope.openIPRuleModel = function() {
             $('#ruleModal').modal();
