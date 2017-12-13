@@ -40,10 +40,13 @@ class TCP(object):
                              (conn, addr))
                 if not Income.isAllowed(self.db, addr[0]):
                     conn.close()
-                    continue
-                client = Client(conn, addr)
-                server = Server(self.webhost, self.webport)
-                self.handle(client, server)
+                else:
+                    client = Client(conn, addr)
+                    server = Server(self.webhost, self.webport)
+                    self.handle(client, server)
+                # flush
+                self.db.close()
+                self.db = initDB()
         except Exception as e:
             logger.exception('Exception while running the server %r' % e)
         finally:

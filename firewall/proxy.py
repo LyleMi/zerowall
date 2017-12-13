@@ -230,7 +230,6 @@ class Proxy(multiprocessing.Process):
 
             if self._process_rlist(r):
                 break
-                break
 
             if self.client.buffer_size() == 0:
                 if self.response.state == HTTP_PARSER_STATE_COMPLETE:
@@ -274,3 +273,5 @@ class Proxy(multiprocessing.Process):
             self._access_log()
             logger.debug('Closing proxy for connection %r at address %r' %
                          (self.client.conn, self.client.addr))
+            self.db.flush()
+            self.db.close()

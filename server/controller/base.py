@@ -11,6 +11,10 @@ class BaseHandler(tornado.web.RequestHandler):
     def db(self):
         return self.application.db
 
+    def on_finish(self):
+        self.db.flush()
+        self.db.close()
+
     def ok(self, data):
         self.write(json.dumps(data))
 

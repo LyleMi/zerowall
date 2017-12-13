@@ -3,15 +3,11 @@
 
 import socket
 
-try:
-    from urllib import parse as urlparse
-except Exception as e:
-    pass
 
-try:
+if __import__('platform').python_version()[0] == "2":
     import urlparse
-except Exception as e:
-    pass
+else:
+    from urllib import parse as urlparse
 
 from firewall.const import *
 
