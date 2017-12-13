@@ -2,8 +2,21 @@
 # -*- coding: utf-8 -*-
 
 import socket
+<<<<<<< HEAD
 # from urllib import parse as urlparse
 import urlparse
+=======
+
+try:
+    from urllib import parse as urlparse
+except Exception as e:
+    pass
+
+try:
+    from urlparse import urlparse
+except Exception as e:
+    pass
+>>>>>>> 37297dbecccc86f1ae8a7b37b9b72e617521e6f6
 
 from firewall.const import *
 
